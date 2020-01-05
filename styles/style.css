@@ -74,6 +74,10 @@ img {
   cursor: pointer;
 }
 
+.nameCareer{
+  display: none;
+}
+
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
   background-color: #2980B9;

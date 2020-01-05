@@ -13,7 +13,7 @@
     <ul> 
       <li>
         <button onclick="teamAndYearButtonClick()">Team & Year</button>
-        <div hidden class="dropdown">
+        <div class="dropdown">
           <button onclick="teamDropdownShow()" class="dropbtn" id="teamDropdownBtn">Select Team</button>
             <div id="teamDropdown" class="dropdown-content">
               <a onclick="updateTeamDropdown(this.id)" id="BOS" >Red Sox</a>
@@ -31,8 +31,25 @@
             </div>
           </div>
       </li>
-      <li><button onclick="careerStatsButtonClick()">Career Stats</button onclick="careerStatsButtonClick()"></li>
-      <li><button onclick="allTimeButtonClick()">All Time Stat Leaders</button onclick="careerStatsButtonClick()"></li>
+      <li>
+        <button onclick="careerStatsButtonClick()">Career Stats</button>
+        <label class=nameCareer for="firstName" id=firstNameLabel >First name:</label>
+        <input class=nameCareer type="text" id="firstName" required size="10">
+        <label class=nameCareer for="lastName" id=lastNameLabel>Last name:</label>
+        <input class=nameCareer type="text" id="lastName" required size="10">
+      </li>
+      <li>
+        <button onclick="allTimeButtonClick()">All Time Stat Leaders</button>
+
+        <div class="dropdown">
+          <button onclick="allTimeDropdownShow()" class="dropbtn" id="allTimeDropdownBtn">Select Stat</button>
+            <div id="allTimeDropdown" class="dropdown-content">
+              <a onclick="updateAllTimeDropdown(this.name)" name="Games" >Games</a>
+              <a onclick="updateAllTimeDropdown(this.name)" name="Hits">Hits</a>
+              <a onclick="updateAllTimeDropdown(this.name)" name="At Bats">At Bats</a>
+            </div>
+          </div>
+      </li>
     </ul>
 
     <p>Soren Mortvedt</p>

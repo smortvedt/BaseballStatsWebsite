@@ -1,9 +1,17 @@
+var teamAndYearBool = false
+var careerBool = false
+var allTimeBool = false
+
 function teamDropdownShow() {
   document.getElementById("teamDropdown").classList.toggle("show");
 }
 
 function yearDropdownShow() {
   document.getElementById("yearDropdown").classList.toggle("show");
+}
+
+function allTimeDropdownShow() {
+  document.getElementById("allTimeDropdown").classList.toggle("show");
 }
 
 function updateTeamDropdown(teamId) {
@@ -14,16 +22,35 @@ function updateYearDropdown(yearId) {
   document.querySelector('#yearDropdownBtn').textContent = yearId;
 }
 
+function updateAllTimeDropdown(stat) {
+  document.querySelector('#allTimeDropdownBtn').textContent = stat;
+}
+
 function careerStatsButtonClick(){
+  careerBool=true
+  allTimeBool=false
+  teamAndYearBool=false
   hideTeamYearButtons()
+  showCareerStatsNameInputs()
+  document.getElementById("allTimeDropdownBtn").style.display="none"
 }
 
 function allTimeButtonClick(){
+  careerBool=false
+  allTimeBool=true
+  teamAndYearBool=false
   hideTeamYearButtons()
+  hideCareerStatsNameInputs()
+  document.getElementById("allTimeDropdownBtn").style.display="block"
 }
 
 function teamAndYearButtonClick(){
+  careerBool=false
+  allTimeBool=false
+  teamAndYearBool=true
   showTeamYearButtons()
+  hideCareerStatsNameInputs()
+  document.getElementById("allTimeDropdownBtn").style.display="none"
 }
 
 function showTeamYearButtons(){
@@ -34,6 +61,20 @@ function showTeamYearButtons(){
 function hideTeamYearButtons(){
   document.getElementById("teamDropdownBtn").style.display="none"
   document.getElementById("yearDropdownBtn").style.display="none"
+}
+
+function showCareerStatsNameInputs(){
+  document.getElementById("firstNameLabel").style.display="inline-block"
+  document.getElementById("firstName").style.display="inline-block"
+  document.getElementById("lastNameLabel").style.display="inline-block"
+  document.getElementById("lastName").style.display="inline-block"
+}
+
+function hideCareerStatsNameInputs(){
+  document.getElementById("firstNameLabel").style.display="none"
+  document.getElementById("firstName").style.display="none"
+  document.getElementById("lastNameLabel").style.display="none"
+  document.getElementById("lastName").style.display="none"
 }
 
 function getStatsOnClick() {
