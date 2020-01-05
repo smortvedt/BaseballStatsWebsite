@@ -271,7 +271,7 @@ def getForeignKeys(table1, table2):
 def getLimitOffset(query):
     inArgs = None
     offset=str(0)
-    limit=str(10)
+    limit=str(50)
     if request.args is not None:
         inArgs = dict(copy.copy(request.args))
     for k,v in inArgs.items():
@@ -652,21 +652,17 @@ def get_roster():
     teamid=query["teamid"]
     yearid=query["yearid"]  
     cursor = cnx.cursor()    
-    q="select SQL_CALC_FOUND_ROWS d.namefirst, d.namelast, a.playerID, a.teamid, a.yearID, a.g_all, b.H, b.AB, c.a, c.e from \
+    q="select SQL_CALC_FOUND_ROWS d.namefirst, d.namelast, a.playerID, a.teamid, a.yearID, a.g_all, b.H, b.AB from \
     (select playerID, teamID, yearID, g_all from appearances where \
      (teamID = '"+ teamid +"' and yearID = '"+ yearid +"') )  as a \
-JOIN \
+inner JOIN \
 	(select playerid, H, AB, yearid from batting where \
      (teamID = '"+ teamid +"' and yearID = '"+ yearid +"') )  as b \
 on a.playerid = b.playerid \
-JOIN \
-	(select playerid, A, E, yearid from fielding where \
-     (teamID = '"+ teamid +"' and yearID = '"+ yearid +"') )  as c \
-on b.playerid = c.playerid \
-JOIN \
+inner JOIN \
 	(select playerid, namefirst, namelast from people) \
     as d \
-on c.playerid = d.playerid \
+on a.playerid = d.playerid \
  LIMIT "+lim+" OFFSET "+offs+";"
 
     try:  
@@ -716,7 +712,8 @@ on c.playerid = d.playerid \
             links["previous:"] = urlString + "?&offset="+newOffs+"&limit="+lim
     print(json.dumps(results, indent=2))
     print(json.dumps(links, indent=2))
-    return json.dumps(results, indent=2)+json.dumps(links, indent=2), 200, {'Content-Type': 'application/json; charset=utf-8','Access-Control-Allow-Origin':'*'}
+    returnDict={'results':results,'links':links}
+    return returnDict, 200, {'Content-Type': 'application/json; charset=utf-8','Access-Control-Allow-Origin':'*'}
     
 if __name__ == '__main__':
     app.run()

@@ -10,44 +10,52 @@
     <h1>Baseball Stats On Demand</h1>
     <p>Find stats based on the following options</p>
 
-    <ul> <!-- changed to list in the tutorial -->
-      <li>Team & Year</li>
-      <li>First Name</li>
-      <li>Last Name</li>
+    <ul> 
+      <li>
+        <button onclick="teamAndYearButtonClick()">Team & Year</button>
+        <div hidden class="dropdown">
+          <button onclick="teamDropdownShow()" class="dropbtn" id="teamDropdownBtn">Select Team</button>
+            <div id="teamDropdown" class="dropdown-content">
+              <a onclick="updateTeamDropdown(this.id)" id="BOS" >Red Sox</a>
+              <a onclick="updateTeamDropdown(this.id)" id="SEA">Mariners</a>
+              <a onclick="updateTeamDropdown(this.id)" id="CHI">White Sox</a>
+            </div>
+          </div>
+      
+          <div class="dropdown">
+          <button onclick="yearDropdownShow()" class="dropbtn" id="yearDropdownBtn">Select Year</button>
+            <div id="yearDropdown" class="dropdown-content">
+              <a onclick="updateYearDropdown(this.id)" id="2000" >2000</a>
+              <a onclick="updateYearDropdown(this.id)" id="2001">2001</a>
+              <a onclick="updateYearDropdown(this.id)" id="2002">2002</a>
+            </div>
+          </div>
+      </li>
+      <li><button onclick="careerStatsButtonClick()">Career Stats</button onclick="careerStatsButtonClick()"></li>
+      <li><button onclick="allTimeButtonClick()">All Time Stat Leaders</button onclick="careerStatsButtonClick()"></li>
     </ul>
 
     <p>Soren Mortvedt</p>
     <script src="main.js"></script>
 
-    <div class="dropdown">
-    <button onclick="teamDropdownShow()" class="dropbtn" id="teamDropdownBtn">Select Team</button>
-      <div id="teamDropdown" class="dropdown-content">
-        <a onclick="updateTeamDropdown(this.id)" id="BOS" >Red Sox</a>
-        <a onclick="updateTeamDropdown(this.id)" id="SEA">Mariners</a>
-        <a onclick="updateTeamDropdown(this.id)" id="CHI">White Sox</a>
-      </div>
-    </div>
-
-    <div class="dropdown">
-    <button onclick="yearDropdownShow()" class="dropbtn" id="yearDropdownBtn">Select Year</button>
-      <div id="yearDropdown" class="dropdown-content">
-        <a onclick="updateYearDropdown(this.id)" id="2000" >2000</a>
-        <a onclick="updateYearDropdown(this.id)" id="2001">2001</a>
-        <a onclick="updateYearDropdown(this.id)" id="2002">2002</a>
-      </div>
-    </div>
+    
 
     <p></p>
     <button class="get_stats_button" id="getStatsBtn" onclick="getStatsOnClick()">
     Get Stats! </button>
 
     <table id=stats>
-      <tr>
-        <th>Name</th>
-        <th>Games</th>
-        <th>Hits</th>
-        <th>At Bats</th>
-      <tr>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Games</th>
+          <th>Hits</th>
+          <th>At Bats</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr></tr>
+      <tbody>
     </table>
 
 

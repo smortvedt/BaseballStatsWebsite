@@ -65,6 +65,7 @@ img {
 
 /* Dropdown Button */
 .dropbtn {
+  display: none;
   background-color: #3498DB;
   color: white;
   padding: 16px;

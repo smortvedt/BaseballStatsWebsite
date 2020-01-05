@@ -1,6 +1,3 @@
-const myHeading = document.querySelector('h1');
-myHeading.textContent = 'Hello world!';
-
 function teamDropdownShow() {
   document.getElementById("teamDropdown").classList.toggle("show");
 }
@@ -17,6 +14,28 @@ function updateYearDropdown(yearId) {
   document.querySelector('#yearDropdownBtn').textContent = yearId;
 }
 
+function careerStatsButtonClick(){
+  hideTeamYearButtons()
+}
+
+function allTimeButtonClick(){
+  hideTeamYearButtons()
+}
+
+function teamAndYearButtonClick(){
+  showTeamYearButtons()
+}
+
+function showTeamYearButtons(){
+  document.getElementById("teamDropdownBtn").style.display="block"
+  document.getElementById("yearDropdownBtn").style.display="block"
+}
+
+function hideTeamYearButtons(){
+  document.getElementById("teamDropdownBtn").style.display="none"
+  document.getElementById("yearDropdownBtn").style.display="none"
+}
+
 function getStatsOnClick() {
   var team = document.getElementById('teamDropdownBtn').textContent;
   var year = document.getElementById('yearDropdownBtn').textContent;
@@ -30,7 +49,23 @@ function getStatsQuery(query){
   var path = "http://127.0.0.1:5000/api/roster"
   var client = new HttpClient();
   client.get(path+query, function(response) {
-      document.querySelector('#stats').textContent = response;
+      var results = JSON.parse(response).results
+      var table = document.getElementById("stats")
+      var oldTableBody = table.getElementsByTagName("tbody")[0]
+      var tableBody = document.createElement('tbody')
+      for (var i =0; i<results.length;i++){
+        var row = tableBody.insertRow(0)
+        var cell = row.insertCell(0)
+        var cell1 = row.insertCell(1)
+        var cell2 = row.insertCell(2)
+        var cell3 = row.insertCell(3)
+        var name = results[i].namefirst +' '+ results[i].namelast
+        cell.innerHTML = name
+        cell1.innerHTML = results[i].g_all
+        cell2.innerHTML = results[i].H
+        cell3.innerHTML = results[i].AB
+      }
+      oldTableBody.parentNode.replaceChild(tableBody,oldTableBody)
       return
   });
 }
@@ -69,7 +104,6 @@ var HttpClient = function() {
             }
         }
 
-        // anHttpRequest.open( "GET", aUrl );
         anHttpRequest.send( null );
     }
 }
