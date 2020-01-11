@@ -97,8 +97,8 @@ function getStatsOnClick() {
 }
 
 function getPeopleQuery(query){
-  var path = "http://127.0.0.1:5000/api/people"
-  //var path = "http://smortvedt.pythonanywhere.com/api/people"
+  //var path = "http://127.0.0.1:5000/api/people"
+  var path = "http://smortvedt.pythonanywhere.com/api/people"
 
   var client = new HttpClient();
   client.get(path+query, function(response) {

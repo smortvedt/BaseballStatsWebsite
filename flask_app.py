@@ -570,7 +570,7 @@ def get_stats(playerId):
                           cursorclass=pymysql.cursors.DictCursor,
                           autocommit=True)
     cursor = cnx.cursor()    
-    q="select SQL_CALC_FOUND_ROWS a.playerID, a.teamid, a.yearID, a.g_all, b.H, b.AB, c.a, c.e from \
+    q="select SQL_CALC_FOUND_ROWS a.playerID, a.teamid, a.yearID, sum(a.g_all) as g_all, sum(b.H) as H, sum(b.AB) as AB, d.namefirst, d.namelast from \
     (select playerID, teamID, yearID, g_all from appearances where \
      (playerID = '"+ playerId +"') )  as a \
 JOIN \
@@ -578,9 +578,9 @@ JOIN \
      (playerID = '"+ playerId +"') )  as b \
 on a.yearid = b.yearid \
 JOIN \
-	(select A, E, yearid from fielding where \
-     (playerID = '"+ playerId +"') )  as c \
-on b.yearid = c.yearid\
+	(select playerid, namefirst, namelast from people) \
+    as d \
+on a.playerid = d.playerid\
  LIMIT "+lim+" OFFSET "+offs+";"
  
     try:
