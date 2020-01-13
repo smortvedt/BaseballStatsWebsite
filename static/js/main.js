@@ -121,6 +121,24 @@ function getCareerStats(playerID,tableBody){
   client.get(path, function(response) {
       var results = JSON.parse(response).results
       var table = document.getElementById("stats")
+      var oldHeader = document.getElementsByTagName("thead")[0]
+      var header = document.createElement("thead");
+      var row = header.insertRow(0);     
+      var cell = row.insertCell(0);
+      var cell1 = row.insertCell(1)
+      var cell2 = row.insertCell(2)
+      var cell3 = row.insertCell(3)
+      var cell4 = row.insertCell(4)
+      var cell5 = row.insertCell(5)
+      var cell6 = row.insertCell(6)
+      cell.innerHTML = "Name"
+      cell1.innerHTML = "Games Played"
+      cell2.innerHTML = "Hits"
+      cell3.innerHTML = "At Bats"
+      cell4.innerHTML = "Batting Average"
+      cell5.innerHTML = "First Year"
+      cell6.innerHTML = "Last Year"
+      oldHeader.parentNode.replaceChild(header,oldHeader)
       var tableBody = table.getElementsByTagName("tbody")[0]
       for (var i =0; i<results.length;i++){
         var row = tableBody.insertRow(0)
@@ -128,11 +146,17 @@ function getCareerStats(playerID,tableBody){
         var cell1 = row.insertCell(1)
         var cell2 = row.insertCell(2)
         var cell3 = row.insertCell(3)
+        var cell4 = row.insertCell(4)
+        var cell5 = row.insertCell(5)
+        var cell6 = row.insertCell(6)
         var name = results[i].namefirst +' '+ results[i].namelast
         cell.innerHTML = name
         cell1.innerHTML = results[i].g_all
         cell2.innerHTML = results[i].H
         cell3.innerHTML = results[i].AB
+        cell4.innerHTML = results[i].AVG
+        cell5.innerHTML = results[i].first_year
+        cell6.innerHTML = results[i].last_year
       }
       return tableBody
   });
@@ -146,6 +170,20 @@ function getStatsQuery(query){
   var client = new HttpClient();
   client.get(path+query, function(response) {
       var results = JSON.parse(response).results
+       var oldHeader = document.getElementsByTagName("thead")[0]
+      var header = document.createElement("thead");
+      var row = header.insertRow(0);     
+      var cell = row.insertCell(0);
+      var cell1 = row.insertCell(1)
+      var cell2 = row.insertCell(2)
+      var cell3 = row.insertCell(3)
+      var cell4 = row.insertCell(4)
+      cell.innerHTML = "Name"
+      cell1.innerHTML = "Games Played"
+      cell2.innerHTML = "Hits"
+      cell3.innerHTML = "At Bats"
+      cell4.innerHTML = "Batting Average"
+      oldHeader.parentNode.replaceChild(header,oldHeader)
       var table = document.getElementById("stats")
       var oldTableBody = table.getElementsByTagName("tbody")[0]
       var tableBody = document.createElement('tbody')
@@ -155,11 +193,13 @@ function getStatsQuery(query){
         var cell1 = row.insertCell(1)
         var cell2 = row.insertCell(2)
         var cell3 = row.insertCell(3)
+        var cell4 = row.insertCell(4)
         var name = results[i].namefirst +' '+ results[i].namelast
         cell.innerHTML = name
         cell1.innerHTML = results[i].g_all
         cell2.innerHTML = results[i].H
         cell3.innerHTML = results[i].AB
+        cell4.innerHTML = results[i].AVG
       }
       oldTableBody.parentNode.replaceChild(tableBody,oldTableBody)
       return

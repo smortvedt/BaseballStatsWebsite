@@ -573,18 +573,29 @@ def get_stats(playerId):
                           cursorclass=pymysql.cursors.DictCursor,
                           autocommit=True)
     cursor = cnx.cursor()    
-    q="select SQL_CALC_FOUND_ROWS a.playerID, a.teamid, a.yearID, sum(a.g_all) as g_all, sum(b.H) as H, sum(b.AB) as AB, d.namefirst, d.namelast from \
-    (select playerID, teamID, yearID, g_all from appearances where \
-     (playerID = '"+ playerId +"') )  as a \
-JOIN \
-	(select H, AB, yearid from batting where \
-     (playerID = '"+ playerId +"') )  as b \
-on a.yearid = b.yearid \
-JOIN \
-	(select playerid, namefirst, namelast from people) \
-    as d \
-on a.playerid = d.playerid\
- LIMIT "+lim+" OFFSET "+offs+";"
+    q="select SQL_CALC_FOUND_ROWS \
+    a.playerID, \
+    a.teamid, \
+    a.yearID, \
+    sum(a.g_all) as g_all, \
+    sum(b.H) as H, \
+    sum(b.AB) as AB, \
+    truncate(sum(b.H)/sum(b.AB),3) as AVG, \
+    min(b.yearid) as first_year, \
+    max(b.yearid) as last_year, \
+    d.namefirst, \
+    d.namelast \
+    from \
+        (select playerID, teamID, yearID, g_all from appearances where \
+        (playerID = '"+ playerId +"') )  as a \
+    JOIN \
+	    (select H, AB, yearid from batting where \
+        (playerID = '"+ playerId +"') )  as b \
+    on a.yearid = b.yearid \
+    JOIN \
+	    (select playerid, namefirst, namelast from people) as d \
+    on a.playerid = d.playerid\
+    LIMIT "+lim+" OFFSET "+offs+";"
  
     try:
         cursor.execute(q)
@@ -654,7 +665,7 @@ def get_roster():
     teamid=query["teamid"]
     yearid=query["yearid"]  
     cursor = cnx.cursor()    
-    q="select SQL_CALC_FOUND_ROWS d.namefirst, d.namelast, a.playerID, a.teamid, a.yearID, a.g_all, b.H, b.AB from \
+    q="select SQL_CALC_FOUND_ROWS d.namefirst, d.namelast, a.playerID, a.teamid, a.yearID, a.g_all, b.H, b.AB, truncate(b.H/b.AB,3) as AVG from \
     (select playerID, teamID, yearID, g_all from appearances where \
      (teamID = '"+ teamid +"' and yearID = '"+ yearid +"') )  as a \
 inner JOIN \
