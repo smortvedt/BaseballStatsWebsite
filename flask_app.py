@@ -646,7 +646,6 @@ def get_stats(playerId):
     
     
 @app.route('/api/roster', methods = ["GET"])
-#@cross_origin()
 def get_roster():
     fields,query = parseArgs()
     lim,offs=getLimitOffset(query)
@@ -684,6 +683,87 @@ on a.playerid = d.playerid  order by CAST(a.g_all AS UNSIGNED)\
     if not results:
         print("Cannot find Team or Year: "+teamid+' '+yearid)
         return "Cannot find Team or Year: "+teamid+' '+yearid, 404, {'Content-Type': 'application/json; charset=utf-8'}
+
+    q = "Select FOUND_ROWS();"
+    try:
+        cursor.execute(q)
+        totalLength=cursor.fetchall()
+    except Exception as e:
+        return [],{}
+    links={}
+    totalLength = int(totalLength[0]["FOUND_ROWS()"])
+    base=request.base_url
+    query=dict(copy.copy(request.args))
+    urlString=base
+    otherQueries=False
+    for k,v in query.items():
+        if k.lower() != "offset" and k.lower() != "limit" :
+            otherQueries=True
+            if urlString == base:
+                urlString=urlString+"?"+ k+"="+v
+            else:
+                urlString=urlString+"&"+ k+"="+v
+    if otherQueries:
+        links["current:"] = urlString + "&offset="+offs+"&limit="+lim
+        if totalLength>int(offs)+int(lim):
+            newOffs=str(int(offs)+int(lim))
+            links["next:"] = urlString + "&offset="+newOffs+"&limit="+lim
+        newOffs=str(int(offs)-int(lim))
+        if int(newOffs)>=0:
+            links["previous:"] = urlString + "&offset="+newOffs+"&limit="+lim
+    else:
+        links["current:"] = urlString + "?&offset="+offs+"&limit="+lim
+        if totalLength>int(offs)+int(lim):
+            newOffs=str(int(offs)+int(lim))
+            links["next:"] = urlString + "?&offset="+newOffs+"&limit="+lim
+        newOffs=str(int(offs)-int(lim))
+        if int(newOffs)>=0:
+            links["previous:"] = urlString + "?&offset="+newOffs+"&limit="+lim
+    print(json.dumps(results, indent=2))
+    print(json.dumps(links, indent=2))
+    returnDict={'results':results,'links':links}
+    return returnDict, 200, {'Content-Type': 'application/json; charset=utf-8','Access-Control-Allow-Origin':'*'}
+
+@app.route('/api/all_time_stats', methods = ["GET"])
+def get_all_time_stats():
+    fields,query = parseArgs()
+    lim,offs=getLimitOffset(query)
+    cnx = pymysql.connect(host='smortvedt.mysql.pythonanywhere-services.com',
+                          user='smortvedt',
+                          password='dbuserdbuser',
+                          db='smortvedt$baseball',
+                          charset='utf8mb4',
+                          cursorclass=pymysql.cursors.DictCursor,
+                          autocommit=True)
+    f,query = parseArgs()
+    query = dict((k.lower(), v) for k,v in query.items())
+    stat=query["stat"]
+    cursor = cnx.cursor()    
+    q="SELECT SQL_CALC_FOUND_ROWS\
+    Batting.playerID, \
+    (SELECT People.nameFirst FROM People WHERE People.playerID=Batting.playerID) as namefirst, \
+    (SELECT People.nameLast FROM People WHERE People.playerID=Batting.playerID) as namelast, \
+    truncate(sum(Batting.h)/sum(batting.ab),3) as AVG, \
+    sum(Batting.h) as H, \
+    sum(Batting.ab) as AB \
+    FROM \
+    Batting \
+    GROUP BY \
+    playerId \
+    HAVING \
+    AB > 200 \
+    ORDER BY "+stat+" DESC \
+    LIMIT 10;"
+
+    try:  
+        cursor.execute(q)
+        results=cursor.fetchall()
+    except Exception as e:
+        print("Found exception: "+ str(e))
+        return "Found exception: "+ str(e), 404, {'Content-Type': 'application/json; charset=utf-8','Access-Control-Allow-Origin':'*'}
+    if not results:
+        print("Cannot find Team or Year: "+teamid+' '+yearid)
+        return "Cannot find Team or Year: "+teamid+' '+yearid, 404, {'Content-Type': 'application/json; charset=utf-8','Access-Control-Allow-Origin':'*'}
 
     q = "Select FOUND_ROWS();"
     try:

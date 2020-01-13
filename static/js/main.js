@@ -94,6 +94,43 @@ function getStatsOnClick() {
       var people = getPeopleQuery(query)
     }
   }
+  else if (allTimeBool){
+    var stat = document.getElementById('allTimeDropdownBtn').textContent;
+    if (stat!="Select Stat"){
+      allTimeStats(stat)
+    }
+  }
+}
+
+function allTimeStats(stat){
+  var query = "?stat="+stat
+  var path = "http://127.0.0.1:5000/api/all_time_stats"
+  //var path = "http://smortvedt.pythonanywhere.com/api/all_time_stats"
+  var client = new HttpClient();
+  client.get(path+query, function(response) {
+      var results = JSON.parse(response).results
+      var oldHeader = document.getElementsByTagName("thead")[0]
+      var header = document.createElement("thead");
+      var row = header.insertRow(0);     
+      var cell = row.insertCell(0);
+      var cell1 = row.insertCell(1)
+      cell.innerHTML = "Name"
+      cell1.innerHTML = stat
+      oldHeader.parentNode.replaceChild(header,oldHeader)
+      var table = document.getElementById("stats")
+      var oldTableBody = document.getElementsByTagName("tbody")[0]
+      var tableBody = document.createElement("tbody");
+      var len = results.length
+      for (var i =0; i<len;i++){
+        var row = tableBody.insertRow(0)
+        var cell = row.insertCell(0)
+        var cell1 = row.insertCell(1)
+        var name = results[len-i-1].namefirst +' '+ results[len-i-1].namelast
+        cell.innerHTML = name
+        cell1.innerHTML = results[len-i-1][stat]
+      }
+      oldTableBody.parentNode.replaceChild(tableBody,oldTableBody)
+  });
 }
 
 function getPeopleQuery(query){
@@ -193,7 +230,7 @@ function getStatsQuery(query){
         var cell1 = row.insertCell(1)
         var cell2 = row.insertCell(2)
         var cell3 = row.insertCell(3)
-        var cell4 = row.insertCell(4)
+        var cell4  = row.insertCell(4)
         var name = results[i].namefirst +' '+ results[i].namelast
         cell.innerHTML = name
         cell1.innerHTML = results[i].g_all
