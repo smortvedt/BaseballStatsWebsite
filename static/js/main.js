@@ -123,7 +123,7 @@ function allTimeStats(stat){
       var len = results.length
       for (var i =0; i<len;i++){
         var row = tableBody.insertRow(0)
-        var cell = row.insertCell(0)
+        var cell = row.insertCell(0)        
         var cell1 = row.insertCell(1)
         var name = results[len-i-1].namefirst +' '+ results[len-i-1].namelast
         cell.innerHTML = name

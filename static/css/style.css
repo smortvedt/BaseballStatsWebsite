@@ -1,43 +1,78 @@
 html {
   font-size: 10px;
   font-family: 'Open Sans', sans-serif;
+  background-color: rgb(1, 11, 20);
 }
 
+table,thead,td {
+  margin: 50;
+  border-width: 2px;
+  border-color: rgb(80, 170, 253);
+  border-collapse: collapse;
+  border-style: solid
+}
 
-h1 {
-  font-size: 60px;
+td{
   text-align: center;
+  color: rgb(80, 170, 253);
 }
 
 p, li {
   font-size: 16px;
   line-height: 2;
   letter-spacing: 1px;
-}
-
-
-html {
-  background-color: #00539F;
+  color: rgb(80, 170, 253);
 }
 
 body {
-  width: 600px;
+  width: 700px;
   margin: 0 auto;
-  background-color: #FF9500;
+  background-color: rgb(34, 34, 34);
   padding: 0 20px 20px 20px;
-  border: 5px solid black;
+  border: 1px solid black;
 }
 
 h1 {
   margin: 0;
   padding: 20px 0;
-  color: #00539F;
+  color: rgb(80, 170, 253);
   text-shadow: 3px 3px 1px black;
+  font-size: 30px;
+  text-align: center;
 }
 
 img {
   display: block;
   margin: 0 auto;
+}
+
+ul{
+  margin: 10px;
+  padding: 0px;
+}
+
+li{
+  margin: 10px;
+  padding: 5px;
+}
+
+input{
+  background: rgb(54, 54, 54);
+  border:none;
+  color: rgb(80, 170, 253);
+}
+
+button{
+    background: none;
+    border-radius:0px;
+    border:none;
+    display:inline-block;
+    cursor:grabbing;
+    color:rgb(80, 170, 253);
+    font-family:Arial;
+    font-size:19px;
+    padding:8px 12px;
+    text-decoration:none;
 }
 
 .get_stats_button {
@@ -117,3 +152,4 @@ img {
 .dropdown-content a:hover {background-color: rgb(53, 50, 50)}
 /* Show the dropdown menu */
 .show {display:block;}
+
