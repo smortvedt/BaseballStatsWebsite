@@ -1,9 +1,14 @@
 var teamAndYearBool = false
 var careerBool = false
 var allTimeBool = false
+var teamID = null;
 
 function teamDropdownShow() {
   document.getElementById("teamDropdown").classList.toggle("show");
+}
+
+function optionsDropdownShow() {
+  document.getElementById("optionsDropdown").classList.toggle("show");
 }
 
 function yearDropdownShow() {
@@ -14,8 +19,9 @@ function allTimeDropdownShow() {
   document.getElementById("allTimeDropdown").classList.toggle("show");
 }
 
-function updateTeamDropdown(teamId) {
-  document.querySelector('#teamDropdownBtn').textContent = teamId;
+function updateTeamDropdown(team) {
+  teamID=team.id
+  document.querySelector('#teamDropdownBtn').textContent = team.name;
 }
 
 function updateYearDropdown(yearId) {
@@ -26,7 +32,22 @@ function updateAllTimeDropdown(stat) {
   document.querySelector('#allTimeDropdownBtn').textContent = stat;
 }
 
-function careerStatsButtonClick(){
+function updateOptionsDropdown(choice) {
+  if (choice == "teamYear")
+  {
+    teamAndYearSelectionUpdate()
+  }
+  else if(choice=="careerStats")
+  {
+    careerStatsSelectionUpdate()
+  }
+  else if(choice=="statLeaders")
+  {
+    allTimeSelectionUpdate()
+  }
+}
+
+function careerStatsSelectionUpdate(){
   careerBool=true
   allTimeBool=false
   teamAndYearBool=false
@@ -35,7 +56,7 @@ function careerStatsButtonClick(){
   document.getElementById("allTimeDropdownBtn").style.display="none"
 }
 
-function allTimeButtonClick(){
+function allTimeSelectionUpdate(){
   careerBool=false
   allTimeBool=true
   teamAndYearBool=false
@@ -44,7 +65,7 @@ function allTimeButtonClick(){
   document.getElementById("allTimeDropdownBtn").style.display="block"
 }
 
-function teamAndYearButtonClick(){
+function teamAndYearSelectionUpdate(){
   careerBool=false
   allTimeBool=false
   teamAndYearBool=true
@@ -79,10 +100,9 @@ function hideCareerStatsNameInputs(){
 
 function getStatsOnClick() {
   if (teamAndYearBool){
-    var team = document.getElementById('teamDropdownBtn').textContent;
     var year = document.getElementById('yearDropdownBtn').textContent;
-    if (!(team=="Select Team" || year == "Select Year")){
-      var query = "?teamid="+team+"&yearid="+year
+    if (!(teamID==null || year == "Select Year")){
+      var query = "?teamid="+teamID+"&yearid="+year
       getStatsQuery(query)
     }
   }

@@ -4,57 +4,57 @@
     <meta charset="utf-8">
     <title>Baseball database</title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    <script src="/static/js/main.js"></script>
     <link href="/static/css/style.css" rel="stylesheet" type="text/css">
+    <script src="/static/js/main.js"></script>
   </head>
   <body>
     <h1>Baseball Stats On Demand</h1>
     <p>Find stats based on the following options:</p>
-
-    <ul> 
-      <li>
-        <button onclick="teamAndYearButtonClick()">Team & Year</button>
-        <div class="dropdown">
-          <button onclick="teamDropdownShow()" class="dropbtn" id="teamDropdownBtn">Select Team</button>
-            <div id="teamDropdown" class="dropdown-content">
-              <a onclick="updateTeamDropdown(this.id)" id="BOS" >Red Sox</a>
-              <a onclick="updateTeamDropdown(this.id)" id="SEA">Mariners</a>
-              <a onclick="updateTeamDropdown(this.id)" id="CHA">White Sox</a>
-            </div>
-          </div>
+    <div class="dropdown">
+      <button onclick="optionsDropdownShow()" class="dropbtn" id="optionsDropdownBtn">Options<i class="caret"></i></button>
+        <div id="optionsDropdown" class="dropdown-content">
+          <a onclick="updateOptionsDropdown(this.name)" name="teamYear" >Team & Year</a>
+          <a onclick="updateOptionsDropdown(this.name)" name="careerStats">Career Stats by Name</a>
+          <a onclick="updateOptionsDropdown(this.name)" name="statLeaders">All Time Stats Leaders</a>
+        </div>
+    </div>
+    
       
-          <div class="dropdown">
-          <button onclick="yearDropdownShow()" class="dropbtn" id="yearDropdownBtn">Select Year</button>
+        <div class="dropdown">
+          <button onclick="teamDropdownShow()" class="dropbtn" id="teamDropdownBtn">Select Team<i class="caret"></i></button>
+            <div id="teamDropdown" class="dropdown-content">
+              <a onclick="updateTeamDropdown(this)" id="BOS" name="Red Sox" >Red Sox</a>
+              <a onclick="updateTeamDropdown(this)" id="SEA" name="Mariners">Mariners</a>
+              <a onclick="updateTeamDropdown(this)" id="CHA" name="White Sox">White Sox</a>
+            </div>
+        </div>
+        <div class="dropdown">
+          <button onclick="yearDropdownShow()" class="dropbtn" id="yearDropdownBtn">Select Year<i class="caret"></i></button>
             <div id="yearDropdown" class="dropdown-content">
               <a onclick="updateYearDropdown(this.id)" id="2000" >2000</a>
               <a onclick="updateYearDropdown(this.id)" id="2001">2001</a>
               <a onclick="updateYearDropdown(this.id)" id="2002">2002</a>
             </div>
-          </div>
-      </li>
-      <li>
-        <button onclick="careerStatsButtonClick()">Career Stats</button>
-        <label class=nameCareer for="firstName" id=firstNameLabel >First name:</label>
+        </div>
+      
+        <label class=nameCareer for="firstName" id=firstNameLabel style="color: white;">First name:</label>
         <input class=nameCareer type="text" id="firstName" required size="10">
-        <label class=nameCareer for="lastName" id=lastNameLabel>Last name:</label>
+        <label class=nameCareer for="lastName" id=lastNameLabel style="color: white;">Last name:</label>
         <input class=nameCareer type="text" id="lastName" required size="10">
-      </li>
-      <li>
-        <button onclick="allTimeButtonClick()">All Time Stat Leaders</button>
+      
         <div class="dropdown">
-          <button onclick="allTimeDropdownShow()" class="dropbtn" id="allTimeDropdownBtn">Select Stat</button>
+          <button onclick="allTimeDropdownShow()" class="dropbtn" id="allTimeDropdownBtn">Select Stat<i class="caret"></i></button>
             <div id="allTimeDropdown" class="dropdown-content">
               <a onclick="updateAllTimeDropdown(this.name)" name="H">Hits</a>
               <a onclick="updateAllTimeDropdown(this.name)" name="AB">At Bats</a>
               <a onclick="updateAllTimeDropdown(this.name)" name="AVG">Batting Average</a>
             </div>
           </div>
-      </li>
-    </ul>
+      
     
     <p></p>
-    <button class="get_stats_button" id="getStatsBtn" onclick="getStatsOnClick()">
-    Get Stats! </button>
+    <button class="get_stats_button" id="getStatsBtn" onclick="getStatsOnClick()"> Get Stats! </button>
+    <p></p>
 
     <table id=stats>
       <thead>
@@ -67,5 +67,5 @@
       <tbody>
     </table>
 
-</body>
-  </html>
+  </body>
+</html>
