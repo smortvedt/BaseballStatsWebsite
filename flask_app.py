@@ -574,21 +574,30 @@ def get_stats(playerId):
     a.playerID, \
     a.teamid, \
     a.yearID, \
-    sum(a.g_all) as g_all, \
-    sum(b.H) as H, \
-    sum(b.AB) as AB, \
+    a.g_all, \
+    b.H, \
+    b.AB, \
+    b.RBI, \
+    b.HR, \
     truncate(sum(b.H)/sum(b.AB),3) as AVG, \
     min(b.yearid) as first_year, \
     max(b.yearid) as last_year, \
+    IFNULL(c.W,'-') as W, \
+    IFNULL(c.L,'-') as L, \
+    IFNULL(c.ERA,'-') as ERA, \
     d.namefirst, \
     d.namelast \
     from \
-        (select playerID, teamID, yearID, g_all from appearances where \
-        (playerID = '"+ playerId +"') )  as a \
+        (select playerID, teamID, yearID, sum(g_all) as g_all from appearances \
+        where (playerID = '"+ playerId +"') )  as a \
     JOIN \
-	    (select H, AB, yearid from batting where \
-        (playerID = '"+ playerId +"') )  as b \
+	    (select sum(H) as H, sum(AB) as AB, sum(RBI) as RBI, sum(HR) as HR, yearid from batting \
+        where (playerID = '"+ playerId +"') )  as b \
     on a.yearid = b.yearid \
+    left JOIN \
+	    (select playerid, sum(W) as W, sum(L) as L, yearid, truncate(AVG(ERA),2) as ERA from pitching \
+        where (playerID = '"+ playerId +"') )  as c \
+    on a.yearid = c.yearid \
     JOIN \
 	    (select playerid, namefirst, namelast from people) as d \
     on a.playerid = d.playerid\
@@ -661,13 +670,17 @@ def get_roster():
     teamid=query["teamid"]
     yearid=query["yearid"]  
     cursor = cnx.cursor()    
-    q="select SQL_CALC_FOUND_ROWS d.namefirst, d.namelast, a.playerID, a.teamid, a.yearID, a.g_all, b.H, b.AB, truncate(b.H/b.AB,3) as AVG from \
+    q="select SQL_CALC_FOUND_ROWS d.namefirst, d.namelast, a.playerID, a.teamid, a.yearID, a.g_all, b.H, b.AB, IFNULL(truncate(b.H/b.AB,3),'-') as AVG, b.HR, b.RBI, b.R, c.W, c.L, c.ERA from \
     (select playerID, teamID, yearID, g_all from appearances where \
      (teamID = '"+ teamid +"' and yearID = '"+ yearid +"') )  as a \
 inner JOIN \
-	(select playerid, H, AB, yearid from batting where \
+	(select playerid, H, AB, yearid, HR, RBI, R from batting where \
      (teamID = '"+ teamid +"' and yearID = '"+ yearid +"') )  as b \
 on a.playerid = b.playerid \
+left JOIN \
+	(select playerid, IFNULL(W,'-') as W, IFNULL(L,'-') as L, yearid, IFNULL(ERA,'-') as ERA from pitching where \
+     (teamID = '"+ teamid +"' and yearID = '"+ yearid +"') )  as c \
+on a.playerid = c.playerid \
 inner JOIN \
 	(select playerid, namefirst, namelast from people) \
     as d \
@@ -745,15 +758,20 @@ def get_all_time_stats():
     (SELECT People.nameLast FROM People WHERE People.playerID=Batting.playerID) as namelast, \
     truncate(sum(Batting.h)/sum(batting.ab),3) as AVG, \
     sum(Batting.h) as H, \
+    sum(Batting.RBI) as RBI, \
+    sum(Batting.HR) as HR, \
+    sum(Batting.SB) as SB, \
+    sum(Batting.R) as R, \
+    sum(Batting.HBP) as HBP,\
     sum(Batting.ab) as AB \
     FROM \
     Batting \
     GROUP BY \
     playerId \
     HAVING \
-    AB > 200 \
+    G > 100 \
     ORDER BY "+stat+" DESC \
-    LIMIT 10;"
+    LIMIT 50;"
 
     try:  
         cursor.execute(q)

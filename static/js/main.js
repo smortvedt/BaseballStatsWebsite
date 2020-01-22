@@ -188,13 +188,20 @@ function getCareerStats(playerID,tableBody){
       var cell4 = row.insertCell(4)
       var cell5 = row.insertCell(5)
       var cell6 = row.insertCell(6)
+      var cell7 = row.insertCell(7)
+      var cell8 = row.insertCell(8)
+      var cell9 = row.insertCell(9)
+
       cell.innerHTML = "Name"
       cell1.innerHTML = "Games Played"
       cell2.innerHTML = "Hits"
       cell3.innerHTML = "At Bats"
       cell4.innerHTML = "Batting Average"
-      cell5.innerHTML = "First Year"
-      cell6.innerHTML = "Last Year"
+      cell5.innerHTML = "HR"
+      cell6.innerHTML = "RBI"
+      cell7.innerHTML = "W"
+      cell8.innerHTML = "L"
+      cell9.innerHTML = "ERA"
       oldHeader.parentNode.replaceChild(header,oldHeader)
       var tableBody = table.getElementsByTagName("tbody")[0]
       for (var i =0; i<results.length;i++){
@@ -206,14 +213,20 @@ function getCareerStats(playerID,tableBody){
         var cell4 = row.insertCell(4)
         var cell5 = row.insertCell(5)
         var cell6 = row.insertCell(6)
+        var cell7 = row.insertCell(7)
+        var cell8 = row.insertCell(8)
+        var cell9 = row.insertCell(9)
         var name = results[i].namefirst +' '+ results[i].namelast
         cell.innerHTML = name
         cell1.innerHTML = results[i].g_all
         cell2.innerHTML = results[i].H
         cell3.innerHTML = results[i].AB
         cell4.innerHTML = results[i].AVG
-        cell5.innerHTML = results[i].first_year
-        cell6.innerHTML = results[i].last_year
+        cell5.innerHTML = results[i].HR
+        cell6.innerHTML = results[i].RBI
+        cell7.innerHTML = results[i].W
+        cell8.innerHTML = results[i].L
+        cell9.innerHTML = results[i].ERA
       }
       return tableBody
   });
@@ -235,11 +248,23 @@ function getStatsQuery(query){
       var cell2 = row.insertCell(2)
       var cell3 = row.insertCell(3)
       var cell4 = row.insertCell(4)
+      var cell5 = row.insertCell(5)
+      var cell6 = row.insertCell(6)
+      var cell7 = row.insertCell(7)
+      var cell8 = row.insertCell(8)
+      var cell9 = row.insertCell(9)
+      var cell10 = row.insertCell(10)
       cell.innerHTML = "Name"
       cell1.innerHTML = "Games Played"
       cell2.innerHTML = "Hits"
       cell3.innerHTML = "At Bats"
       cell4.innerHTML = "Batting Average"
+      cell5.innerHTML = "HR"
+      cell6.innerHTML = "RBI"
+      cell7.innerHTML = "Runs"
+      cell8.innerHTML = "W"
+      cell9.innerHTML = "L"
+      cell10.innerHTML = "ERA"
       oldHeader.parentNode.replaceChild(header,oldHeader)
       var table = document.getElementById("stats")
       var oldTableBody = table.getElementsByTagName("tbody")[0]
@@ -251,12 +276,24 @@ function getStatsQuery(query){
         var cell2 = row.insertCell(2)
         var cell3 = row.insertCell(3)
         var cell4  = row.insertCell(4)
+        var cell5  = row.insertCell(5)
+        var cell6  = row.insertCell(6)
+        var cell7  = row.insertCell(7)
+        var cell8  = row.insertCell(8)
+        var cell9  = row.insertCell(9)
+        var cell10  = row.insertCell(10)
         var name = results[i].namefirst +' '+ results[i].namelast
         cell.innerHTML = name
         cell1.innerHTML = results[i].g_all
         cell2.innerHTML = results[i].H
         cell3.innerHTML = results[i].AB
         cell4.innerHTML = results[i].AVG
+        cell5.innerHTML = results[i].HR
+        cell6.innerHTML = results[i].RBI
+        cell7.innerHTML = results[i].R
+        cell8.innerHTML = results[i].W
+        cell9.innerHTML = results[i].L
+        cell10.innerHTML = results[i].ERA
       }
       oldTableBody.parentNode.replaceChild(tableBody,oldTableBody)
       return
